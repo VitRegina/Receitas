@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Receitas"
         tools:targetApi="31">
+        <activity android:name=".segundaActivityEscolha" />
+        <activity android:name=".terceitaActivityReceitas"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
