@@ -1,4 +1,4 @@
-package com.example.receitas;
+package com.example.receitas.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.example.receitas.R;
 
 public class MainActivity extends AppCompatActivity {
 
