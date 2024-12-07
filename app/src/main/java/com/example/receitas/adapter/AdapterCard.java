@@ -36,6 +36,13 @@ public class AdapterCard extends RecyclerView.Adapter<AdapterCard.MyViewHolder> 
     public int getItemCount(){
         return listaPostagem.size();
     }
+
+    public void updateList(List<Postagem> novaLista) {
+        listaPostagem.clear();
+        listaPostagem.addAll(novaLista);
+        notifyDataSetChanged();
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView textTitulo;
         private TextView textResumo;

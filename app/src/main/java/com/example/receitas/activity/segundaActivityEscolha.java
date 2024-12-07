@@ -33,19 +33,17 @@ public class segundaActivityEscolha extends AppCompatActivity {
 
                 if(!receitas.isEmpty()){
                     Intent intent = new Intent(getApplicationContext(), terceitaActivityReceitas.class);
-                    intent.putExtra("FiltroReceitas", receitas);
+                    intent.putExtra("FiltroReceitas", "receitas");
+                    intent.putExtra("ingrediente", receitas);
                     startActivity(intent);
                 }
-
-
-
             }
         });
         BtnReceitas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), terceitaActivityReceitas.class);
-                intent.putExtra("FiltroReceitas","");
+                intent.putExtra("FiltroReceitas","todas");
                 startActivity(intent);
             }
         });
