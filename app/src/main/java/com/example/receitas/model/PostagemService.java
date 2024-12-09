@@ -11,14 +11,12 @@ public interface PostagemService {
     @GET("/receitas/todas")
     Call<List<Postagem>> getTodasReceitas();
 
-    @GET("/receitas/id")
-    Call<List<Postagem>> getReceitaPorId(@Path("tipo") String tipo);
+    @GET("/receitas/{id}")
+    Call<List<Postagem>> getReceitaPorId(@Path("id") String id);
 
-    @GET ("/ingredientes")
-    Call<Postagem> getTodosIngredientes();
+    @GET("/ingredientes")
+    Call<List<Postagem>> getTodosIngredientes();
 
     @GET("/ingredientes/{id}")
-    Call<List<Postagem>> getReceitasPorIngrediente(@Path("tipo") int id);
-
-
+    Call<List<Postagem>> getReceitasPorIngrediente(@Path("id") int id);
 }

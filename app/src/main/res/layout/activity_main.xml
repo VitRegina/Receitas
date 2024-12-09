@@ -10,7 +10,7 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="350dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="90dp"
         android:foregroundGravity="center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/img"
@@ -20,7 +20,16 @@
         android:id="@+id/btnComecar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="comecar"
         android:text="Começar"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="500dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/roxosuperclaro"
+        android:typeface="normal" />
 </androidx.constraintlayout.widget.ConstraintLayout>

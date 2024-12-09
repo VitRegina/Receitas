@@ -9,10 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.receitas.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class segundaActivityEscolha extends AppCompatActivity {
 
-    TextInputEditText textInputEscreva;
+    TextInputEditText TextInputDigite;
     Button BtnOk, BtnReceitas;
 
     @Override
@@ -20,7 +21,7 @@ public class segundaActivityEscolha extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segundaescolha);
 
-        textInputEscreva = findViewById(R.id.textInputEscreva);
+        TextInputDigite = findViewById(R.id.TextInputDigite);
         BtnOk = findViewById(R.id.BtnOk);
         BtnReceitas = findViewById(R.id.BtnReceitas);
 
@@ -29,7 +30,7 @@ public class segundaActivityEscolha extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                String receitas = textInputEscreva.getText().toString();
+                String receitas = TextInputDigite.getText().toString();
 
                 if(!receitas.isEmpty()){
                     Intent intent = new Intent(getApplicationContext(), terceitaActivityReceitas.class);
@@ -48,5 +49,36 @@ public class segundaActivityEscolha extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // A Activity está visível, você pode inicializar recursos aqui se necessário
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Aqui, caso o usuário tenha interações com o EditText ou outras animações, podemos iniciar
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pausar processos que não precisam ficar rodando enquanto a Activity não está em primeiro plano
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Libere qualquer recurso que não seja mais necessário (como animações, conexões de rede, etc)
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Aqui você pode limpar qualquer dado pesado ou tarefa que precisa ser finalizada
+    }
 }
+
 
