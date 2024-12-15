@@ -2,6 +2,7 @@ package com.example.receitas.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -21,6 +22,8 @@ public class segundaActivityEscolha extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_segundaescolha);
 
+        Log.d("segundaActivityEscolha", "onCreate() chamada");
+
         TextInputDigite = findViewById(R.id.TextInputDigite);
         BtnOk = findViewById(R.id.BtnOk);
         BtnReceitas = findViewById(R.id.BtnReceitas);
@@ -30,12 +33,15 @@ public class segundaActivityEscolha extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                String receitas = TextInputDigite.getText().toString();
+                String ingrediente = TextInputDigite.getText().toString();
 
-                if(!receitas.isEmpty()){
+                Log.d("BtnOk_Click", "Texto digitado: " + ingrediente);
+                Log.d("BtnOk_Click", "Intent criada com FiltroReceitas: ingrediente e Ingrediente: " + ingrediente);
+
+                if(!ingrediente.isEmpty()){
                     Intent intent = new Intent(getApplicationContext(), terceitaActivityReceitas.class);
-                    intent.putExtra("FiltroReceitas", "receitas");
-                    intent.putExtra("ingrediente", receitas);
+                    intent.putExtra("FiltroReceitas", "ingrediente");
+                    intent.putExtra("ingrediente", ingrediente);
                     startActivity(intent);
                 }
             }

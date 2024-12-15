@@ -8,15 +8,18 @@ import retrofit2.http.Path;
 
 public interface PostagemService {
 
+    @GET("receitas/{ingrediente}")
+    Call<List<Postagem>> getReceitasPorIngrediente(@Path("ingrediente") String ingrediente);
+
     @GET("/receitas/todas")
     Call<List<Postagem>> getTodasReceitas();
 
     @GET("/receitas/{id}")
-    Call<List<Postagem>> getReceitaPorId(@Path("id") String id);
+    Call<Postagem> getReceitaPorId(@Path("id") int id);
 
     @GET("/ingredientes")
     Call<List<Postagem>> getTodosIngredientes();
 
     @GET("/ingredientes/{id}")
-    Call<List<Postagem>> getReceitasPorIngrediente(@Path("id") int id);
+    Call<List<Postagem>> getReceitasPorIngredienteId(@Path("id") int id);
 }

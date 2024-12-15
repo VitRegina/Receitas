@@ -1,5 +1,6 @@
 package com.example.receitas.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Postagem {
@@ -19,7 +20,7 @@ public class Postagem {
         this.modo_preparo = modo_preparo;
         this.link_imagem = link_imagem;
         this.tipo = tipo;
-        this.ingredientesBase = ingredientesBase;
+        this.ingredientesBase = ingredientesBase != null ? ingredientesBase : new ArrayList<>();
     }
 
     public int getId() {

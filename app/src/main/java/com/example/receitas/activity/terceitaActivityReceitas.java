@@ -22,11 +22,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class terceitaActivityReceitas  extends AppCompatActivity {
+public class terceitaActivityReceitas extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private AdapterCard adapterCard;
-    private List<Postagem> listaPostagem = new ArrayList<Postagem>();
+    private List<Postagem> listaPostagem = new ArrayList<>();
     private String FiltroReceitas;
 
     @Override
@@ -40,43 +40,46 @@ public class terceitaActivityReceitas  extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapterCard);
 
-
         Intent intent = getIntent();
         FiltroReceitas = intent.getStringExtra("FiltroReceitas");
-        Log.d("IntentData", "FiltroReceitas: " + FiltroReceitas);
+        String ingrediente = intent.getStringExtra("ingrediente");
+
+        // Adicionando log para verificar os dados
+        Log.d("TerceitaActivity", "FiltroReceitas: " + FiltroReceitas);
+        Log.d("TerceitaActivity", "Ingrediente: " + ingrediente);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api-receitas-pi.vercel.app/")
+                .baseUrl("https://api-receitas-pi.vercel.app/") // A URL da API
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         PostagemService api = retrofit.create(PostagemService.class);
 
         if ("ingrediente".equals(FiltroReceitas)) {
-            String ingrediente = intent.getStringExtra("Receitas");
-            int idIngrediente;
-
-            idIngrediente = Integer.parseInt(ingrediente);
-            Log.d("IntentData", "FiltroReceitas: " + idIngrediente);
-
-            api.getReceitasPorIngrediente(idIngrediente).enqueue(new Callback<List<Postagem>>() {
+            // Buscar todas as receitas e depois filtrar localmente
+            api.getTodasReceitas().enqueue(new Callback<List<Postagem>>() {
                 @Override
                 public void onResponse(Call<List<Postagem>> call, Response<List<Postagem>> response) {
                     if (response.isSuccessful() && response.body() != null) {
-
                         Log.d("API_RESPONSE", "Postagens recebidas: " + response.body().size());
-
-                        adapterCard.updateList(response.body());
-
-                    }else{
+                        List<Postagem> postagensFiltradas = filtrarPostagensPorIngrediente(response.body(), ingrediente);
+                        Log.d("FILTER_LOG", "Postagens filtradas: " + postagensFiltradas.size());
+                        if (postagensFiltradas.isEmpty()) {
+                            Log.d("API_RESPONSE", "Nenhuma postagem encontrada com o ingrediente: " + ingrediente);
+                        }
+                        adapterCard.updateList(postagensFiltradas);
+                        Log.d("ERROR", "AdapterCard is null, cannot update the list.");
+                    } else {
                         Log.d("API_RESPONSE", "Resposta vazia ou erro na API");
-
+                        adapterCard.updateList(new ArrayList<>()); // Atualiza com lista vazia em caso de erro
+                        Log.d("ERROR", "AdapterCard is null, cannot update the list.");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Postagem>> call, Throwable t) {
-
+                    Log.d("API_RESPONSE", "Falha na requisição: " + t.getMessage());
+                    adapterCard.updateList(new ArrayList<>()); // Atualiza com lista vazia em caso de falha
                 }
             });
 
@@ -85,46 +88,72 @@ public class terceitaActivityReceitas  extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<List<Postagem>> call, Response<List<Postagem>> response) {
                     if (response.isSuccessful() && response.body() != null) {
+                        Log.d("API_RESPONSE", "Postagens recebidas: " + response.body().size());
+                        if (response.body().isEmpty()) {
+                            Log.d("API_RESPONSE", "Nenhuma postagem encontrada.");
+                        }
                         adapterCard.updateList(response.body());
+                    } else {
+                        Log.d("API_RESPONSE", "Resposta vazia ou erro na API");
+                        adapterCard.updateList(new ArrayList<>()); // Atualiza com lista vazia em caso de erro
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Postagem>> call, Throwable t) {
-
+                    Log.d("API_RESPONSE", "Falha na requisição: " + t.getMessage());
+                    adapterCard.updateList(new ArrayList<>()); // Atualiza com lista vazia em caso de falha
                 }
             });
         }
     }
 
+    private List<Postagem> filtrarPostagensPorIngrediente(List<Postagem> postagens, String ingrediente) {
+        List<Postagem> postagensFiltradas = new ArrayList<>();
+        if (postagens != null && !postagens.isEmpty()) {
+            for (Postagem postagem : postagens) {
+                if (postagem.getIngredientesBase() != null && !postagem.getIngredientesBase().isEmpty()) {
+                    for (Postagem.IngredienteBase ingredienteBase : postagem.getIngredientesBase()) {
+                        if (ingredienteBase.getNomesIngrediente() != null && !ingredienteBase.getNomesIngrediente().isEmpty()) {
+                            for (String nomeIngrediente : ingredienteBase.getNomesIngrediente()) {
+                                if (nomeIngrediente != null && nomeIngrediente.trim().toLowerCase().contains(ingrediente.trim().toLowerCase())) {
+                                    postagensFiltradas.add(postagem);
+                                    break; // Adiciona uma vez e sai do loop
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return postagensFiltradas;
+    }
+
+
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        // A Activity está visível, você pode carregar dados, como os cards
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Caso precise atualizar a interface (por exemplo, mostrar novos cards ou dados), faça aqui
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // Pausar animações ou qualquer processo em segundo plano aqui
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        // Liberar recursos que não são mais necessários
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Finalize recursos pesados, como conexões com banco de dados ou API
     }
 }

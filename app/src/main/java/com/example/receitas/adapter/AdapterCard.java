@@ -1,9 +1,11 @@
 package com.example.receitas.adapter;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.receitas.R;
+import com.example.receitas.activity.quartaActivityReceitas;
 import com.example.receitas.model.Postagem;
 
 import java.util.ArrayList;
@@ -35,10 +38,18 @@ public class AdapterCard extends RecyclerView.Adapter<AdapterCard.MyViewHolder> 
         holder.textTitulo.setText(postagem.getReceita());
         holder.textResumo.setText(postagem.getResumo());
         Glide.with(holder.imagePostagem.getContext())
-                .load(postagem.getLinkImagem()) // A URL da imagem
-                .into(holder.imagePostagem);  // A ImageView onde a imagem será exibida
+                .load(postagem.getLinkImagem())
+                .into(holder.imagePostagem);
         Log.d("AdapterCard", "Lista de postagens: " + listaPostagem.size());
 
+
+        holder.btnAcessar.setOnClickListener(v -> {
+
+            Intent intent = new Intent(holder.itemView.getContext(), quartaActivityReceitas.class);
+            intent.putExtra("id", postagem.getId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
     public int getItemCount(){
         return listaPostagem.size();
@@ -55,12 +66,14 @@ public class AdapterCard extends RecyclerView.Adapter<AdapterCard.MyViewHolder> 
         private TextView textTitulo;
         private TextView textResumo;
         private ImageView imagePostagem;
+        private Button btnAcessar;
 
         public MyViewHolder (@NonNull View itemView){
             super(itemView);
             this.textTitulo = itemView.findViewById(R.id.textTitulo);
             this.textResumo = itemView.findViewById(R.id.textResumo);
             this.imagePostagem = itemView.findViewById(R.id.imgreceita);
+            this.btnAcessar = itemView.findViewById(R.id.BtnAcessar);
         }
         }
     public void filtrarPostagens(String query) {
